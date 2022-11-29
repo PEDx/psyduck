@@ -1,19 +1,19 @@
-import { FC } from 'react';
-import { PsyduckElement, EPsyduckDataType } from '.';
+import { FC } from 'react'
+import { PsyduckElement, EPsyduckDataType } from '.'
 
-interface IImageElementProps {
-  text: string;
+export interface IImageElementProps {
+  text?: string
 }
-export const ImageElement: FC<IImageElementProps> = ({ text }) => {
-  return <div>{text}</div>;
-};
+export const Image: FC<IImageElementProps> = ({ text }) => {
+  return <div style={{ color: '#333' }}>fast: {text}</div>
+}
 
-export const e: PsyduckElement<IImageElementProps> = {
-  view: ImageElement,
+export const ImageElement: PsyduckElement<IImageElementProps> = {
+  view: Image,
   data: {
     text: {
-      value: '',
+      value: 'text',
       type: EPsyduckDataType.InputString,
     },
   },
-};
+}

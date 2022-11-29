@@ -1,18 +1,38 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {
   Box,
   Flex,
   Button,
   Heading,
   useColorMode,
-  useColorModeValue,
   Card,
 } from '@chakra-ui/react'
+import { reactive, effect } from '@vue/reactivity'
+import { event } from './event'
 import { Viewport } from './Viewport'
+
+export const state = reactive({
+  count: 0,
+})
+
+effect(() => {
+  console.log('plusOne changed: ', state.count)
+})
+
+const add = () => (state.count += 1)
 
 export const Editor: FC = () => {
   const { toggleColorMode } = useColorMode()
-  const bg = useColorModeValue('#f5f5f5', '#222b3a')
+
+  const [control, setControl] = useState()
+
+  useEffect(() => {
+    event.on('select-node', (data) => {
+      console.log(data.element)
+    })
+
+    return () => event.clear('select-node')
+  }, [])
   return (
     <Flex flexDirection={'column'} h={'100%'}>
       <Card borderRadius={0}>
@@ -39,11 +59,13 @@ export const Editor: FC = () => {
           h={'100%'}
           bg={'var(--editor-gird-color)'}
           borderRadius={0}
-        ></Card>
+        >
+          <Button onClick={() => add()}>add</Button>
+        </Card>
         <Box
           flex={'1'}
           h={'100%'}
-          pt="36px"
+          pt='36px'
           style={{
             backgroundPosition: ' 0 0, 8px 8px',
             backgroundSize: '16px 16px',
