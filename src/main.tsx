@@ -1,10 +1,21 @@
 import React from 'react'
+import { ChakraProvider, extendTheme, withDefaultSize } from '@chakra-ui/react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+import { Editor } from './editor'
+import './style/index.css'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const customTheme = extendTheme(
+  withDefaultSize({
+    size: 'xs',
+    components: ['Button', 'Badge', 'Heading'],
+  }),
+)
+
+const rootElement = document.getElementById('root')
+ReactDOM.createRoot(rootElement!).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <ChakraProvider theme={customTheme}>
+      <Editor />
+    </ChakraProvider>
+  </React.StrictMode>,
 )
