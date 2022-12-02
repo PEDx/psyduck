@@ -7,7 +7,7 @@ import './style/index.css'
 const customTheme = extendTheme(
   withDefaultSize({
     size: 'xs',
-    components: ['Button', 'Badge', 'Heading'],
+    components: ['Button', 'Badge', 'Heading', 'Input'],
   }),
 )
 

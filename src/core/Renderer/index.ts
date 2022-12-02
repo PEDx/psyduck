@@ -1,4 +1,5 @@
 import { getRandomStr } from '@/utils'
+import { reactive } from '@vue/reactivity'
 import { PsyduckElement } from '../Element'
 
 export class PsyduckNode<K> {
@@ -11,12 +12,19 @@ export class PsyduckNode<K> {
   readonly element: PsyduckElement<K>
   constructor(element: PsyduckElement<K>) {
     this.id = getRandomStr(8)
+
+    const data: Record<string, unknown> = {}
+
     Object.keys(element.data).forEach((key) => {
-      this.data[key] = element.data[key as keyof typeof element.data]?.value
+      data[key] = element.data[key as keyof typeof element.data]?.value
     })
+
+    this.data = reactive(data)
+
     this.name = element.view.name
     this.element = element
   }
+  destory() {}
 }
 
 export class PsyduckRenderer {
