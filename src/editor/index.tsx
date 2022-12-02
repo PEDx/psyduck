@@ -57,6 +57,10 @@ export const Editor: FC = () => {
           h={'100%'}
           bg={'var(--editor-gird-color)'}
           borderRadius={0}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
         >
           <RightPanel />
         </Card>

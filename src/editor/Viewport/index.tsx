@@ -15,6 +15,7 @@ import { event } from '@/editor/event'
 import { PsyduckElement } from '@/core/Element'
 import { effect, stop } from '@vue/reactivity'
 import { useUpdate } from '@/hooks/useUpdate'
+import { useClickAway } from '@/hooks/useClickAway'
 import './style.scss'
 
 const ViewportContext = createContext({
@@ -79,6 +80,12 @@ const EditBlock = function <T>({
 
 export const Viewport: FC = () => {
   const [selectId, setSelectId] = useState('')
+  const boxRef = useRef<HTMLDivElement | null>(null)
+
+  useClickAway(boxRef, () => {
+    setSelectId('')
+  })
+
   return (
     <ViewportContext.Provider
       value={{
@@ -86,7 +93,7 @@ export const Viewport: FC = () => {
         setSelectId,
       }}
     >
-      <Box h={812} w={375} bg={'#fff'} m='0 auto'>
+      <Box h={812} w={375} bg={'#fff'} m='0 auto' ref={boxRef}>
         <EditBlock element={ImageElement} />
         <EditBlock element={ImageElement} />
         <EditBlock element={ImageElement} />
