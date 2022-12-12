@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react'
 
 export enum EPsyduckDataType {
   InputString,
@@ -11,22 +11,22 @@ export enum EPsyduckDataType {
 }
 
 export interface PsyduckCustomData<T> extends PsyduckData<T> {
-  type: EPsyduckDataType.Custom;
-  view: FC;
+  type: EPsyduckDataType.Custom
+  view: FC
 }
 
 export interface PsyduckData<T> {
-  view?: FC;
-  config?: () => Promise<unknown>;
-  type: EPsyduckDataType;
-  value: T;
+  view?: FC
+  config?: () => Promise<unknown>
+  type: EPsyduckDataType
+  value: T
 }
 
 type TTransPsyduckData<T> = {
-  [P in keyof T]?: PsyduckData<T[P]>;
-};
+  [P in keyof T]?: PsyduckData<T[P]>
+}
 
 export interface PsyduckElement<T> {
-  view: FC<T>;
-  data: TTransPsyduckData<T>;
+  view: FC<T & { children?: React.ReactNode }>
+  data: TTransPsyduckData<T>
 }

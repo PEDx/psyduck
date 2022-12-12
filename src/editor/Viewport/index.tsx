@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { Box } from '@chakra-ui/react'
 import { ImageElement } from '@/core/Element/ImageElement'
+import { ContainerElement } from '@/core/Element/ContainerElement'
 import { PsyduckNode } from '@/core/Renderer'
 import { event } from '@/editor/event'
 import { PsyduckElement } from '@/core/Element'
@@ -26,16 +27,11 @@ const ViewportContext = createContext({
 const readValue = (obj: Record<string, unknown>) =>
   Object.values(obj).forEach((v) => v)
 
-const EditBlock = function <T>({
-  element,
-}: {
-  element: PsyduckElement<T | {}>
-}) {
+const EditBlock = function <T>({ node }: { node: PsyduckNode<T | {}> }) {
   const { selectId, setSelectId } = useContext(ViewportContext)
   const nodeRef = useRef<HTMLDivElement | null>(null)
   const update = useUpdate()
   const noWrap = false
-  const [node] = useState<PsyduckNode<T | {}>>(new PsyduckNode(element))
 
   useEffect(() => {
     const runner = effect(() => {
@@ -52,11 +48,13 @@ const EditBlock = function <T>({
       // 展示控制
       setSelectId(node.id)
       event.emit('select-node', node as PsyduckNode<unknown>)
+      e.stopPropagation()
     },
     [node],
   )
 
   const ElementView = node.element.view
+  const ElementViewChildren = node.children || []
 
   if (noWrap) return <ElementView {...node.data} />
 
@@ -73,7 +71,11 @@ const EditBlock = function <T>({
         outline: select ? '1px solid red' : '',
       }}
     >
-      <ElementView {...node.data} />
+      <ElementView {...node.data}>
+        {ElementViewChildren.map((nod) => (
+          <EditBlock node={nod} key={nod.id} />
+        ))}
+      </ElementView>
     </div>
   )
 }
@@ -81,10 +83,15 @@ const EditBlock = function <T>({
 export const Viewport: FC = () => {
   const [selectId, setSelectId] = useState('')
   const boxRef = useRef<HTMLDivElement | null>(null)
+  const rootRef = useRef(new PsyduckNode(ContainerElement))
 
   useClickAway(boxRef, () => {
     setSelectId('')
   })
+
+  useEffect(() => {
+    rootRef.current.children.push(new PsyduckNode(ImageElement))
+  }, [])
 
   return (
     <ViewportContext.Provider
@@ -94,9 +101,7 @@ export const Viewport: FC = () => {
       }}
     >
       <Box h={812} w={375} bg={'#fff'} m='0 auto' ref={boxRef}>
-        <EditBlock element={ImageElement} />
-        <EditBlock element={ImageElement} />
-        <EditBlock element={ImageElement} />
+        <EditBlock node={rootRef.current} />
       </Box>
     </ViewportContext.Provider>
   )

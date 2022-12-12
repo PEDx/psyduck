@@ -1,13 +1,13 @@
 import { FC } from 'react'
 import { PsyduckElement, EPsyduckDataType } from '.'
 
-export interface IImageElementProps {
+export interface IImageProps {
   text?: string
   modal?: 'fill' | 'contain' | 'cover'
   bgColor?: string
   url?: string
 }
-export const Image: FC<IImageElementProps> = ({ text, modal }) => {
+export const Image: FC<IImageProps> = ({ text, modal }) => {
   return (
     <div style={{ color: '#333' }}>
       fast: {text} {modal}
@@ -15,7 +15,7 @@ export const Image: FC<IImageElementProps> = ({ text, modal }) => {
   )
 }
 
-export const ImageElement: PsyduckElement<IImageElementProps> = {
+export const ImageElement: PsyduckElement<IImageProps> = {
   view: Image,
   data: {
     text: {

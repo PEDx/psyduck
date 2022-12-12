@@ -4,7 +4,6 @@ import { PsyduckElement } from '../Element'
 
 export class PsyduckNode<K> {
   readonly id: string
-  readonly dom: HTMLElement | null = null
   readonly name: string
   readonly version: string | null = null
   readonly data: Record<string, unknown> = {}
