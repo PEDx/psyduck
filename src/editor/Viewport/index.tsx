@@ -13,7 +13,6 @@ import { ImageElement } from '@/core/Element/ImageElement'
 import { ContainerElement } from '@/core/Element/ContainerElement'
 import { PsyduckNode } from '@/core/Renderer'
 import { event } from '@/editor/event'
-import { PsyduckElement } from '@/core/Element'
 import { effect, stop } from '@vue/reactivity'
 import { useUpdate } from '@/hooks/useUpdate'
 import { useClickAway } from '@/hooks/useClickAway'
@@ -68,7 +67,7 @@ const EditBlock = function <T>({ node }: { node: PsyduckNode<T | {}> }) {
       className='psyduck-edit-block'
       style={{
         cursor: 'pointer',
-        outline: select ? '1px solid red' : '',
+        outline: select ? '1px solid green' : '',
       }}
     >
       <ElementView {...node.data}>
@@ -91,6 +90,10 @@ export const Viewport: FC = () => {
 
   useEffect(() => {
     rootRef.current.children.push(new PsyduckNode(ImageElement))
+
+    return () => {
+      rootRef.current.children.length = 0
+    }
   }, [])
 
   return (

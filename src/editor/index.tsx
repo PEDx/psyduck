@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { Viewport } from './Viewport'
 import { RightPanel } from './RightPanel'
+import { LeftPanel } from './LeftPanel'
 
 export const Editor: FC = () => {
   const { toggleColorMode } = useColorMode()
@@ -38,7 +39,9 @@ export const Editor: FC = () => {
           h={'100%'}
           bg={'var(--editor-gird-color)'}
           borderRadius={0}
-        ></Card>
+        >
+          <LeftPanel />
+        </Card>
         <Box
           flex={'1'}
           h={'100%'}
